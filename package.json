@@ -1,0 +1,43 @@
+{
+  "name": "@duplojs/duplojs-cookie",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "nodemon --exec 'ts-node test/index.ts'",
+    "build": "rollup --config && npx tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "exports": {
+    "default": {
+      "import": "./dist/cookie.mjs",
+      "require": "./dist/cookie.cjs"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@duplojs/duplojs": "^0.4.2",
+    "cookie": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autocannon": "^7.11.0",
+    "eslint": "^8.45.0",
+    "nodemon": "^3.0.1",
+    "rollup": "^3.26.2",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.2"
+  }
+}
