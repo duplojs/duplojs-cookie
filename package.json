@@ -1,5 +1,5 @@
 {
-  "name": "@duplojs/duplojs-cookie",
+  "name": "@duplojs/cookie",
   "version": "0.0.0",
   "description": "",
   "scripts": {
@@ -23,8 +23,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@duplojs/duplojs": "^0.4.2",
-    "cookie": "^0.5.0"
+    "@duplojs/duplojs": "^0.4.3",
+    "@types/cookie": "^0.5.1",
+    "cookie": "^0.5.0",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
@@ -39,5 +41,12 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "scripts",
+      "test"
+    ],
+    "ext": "ts, js"
   }
 }
