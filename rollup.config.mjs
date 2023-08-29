@@ -3,7 +3,7 @@ import esbuild from "rollup-plugin-esbuild";
 
 export default defineConfig([
 	{
-		input: "scripts/index.ts",
+		input: "scripts/cookie.ts",
 		output: [
 			{
 				file: "dist/cookie.mjs",
@@ -23,7 +23,7 @@ export default defineConfig([
 		]
 	},
 	{
-		input: "scripts/indexAbstract.ts",
+		input: "scripts/cookieAbstract.ts",
 		output: [
 			{
 				file: "dist/cookieAbstract.mjs",

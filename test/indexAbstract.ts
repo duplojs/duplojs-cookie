@@ -1,5 +1,5 @@
 import Duplo, {zod} from "@duplojs/duplojs";
-import duploCookie from "../scripts/indexAbstract";
+import duploCookie from "../scripts/cookieAbstract";
 
 const duplo = Duplo({port: 1506, host: "0.0.0.0"});
 const abstractCookie = duplo.use(duploCookie);
