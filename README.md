@@ -18,15 +18,15 @@ duplo.use(duploCookie);
 // exempel global
 duplo.declareRoute("GET", "/")
 .extract({
-	cookies: {
-		my_super_cookie: zod.string().optional()
-	}
+    cookies: {
+        my_super_cookie: zod.string().optional()
+    }
 })
 .cut((floor, response) => {
-	if(floor.pickup("my_super_cookie"))response.code(403).deleteCookie("my_super_cookie").info("already has my super cookie").send();
+    if(floor.pickup("my_super_cookie"))response.code(403).deleteCookie("my_super_cookie").info("already has my super cookie").send();
 })
 .handler((floor, response) => {
-	response.code(200).info("take my super cookie").setCookie("my_super_cookie", "a nice cookie").send();
+    response.code(200).info("take my super cookie").setCookie("my_super_cookie", "a nice cookie").send();
 });
 
 duplo.launch();
@@ -43,15 +43,15 @@ const abstractCookie = duplo.use(duploCookieAbstract);
 // exemple local
 abstractCookie.declareRoute("GET", "/")
 .extract({
-	cookies: {
-		my_super_cookie: zod.string().optional()
-	}
+    cookies: {
+        my_super_cookie: zod.string().optional()
+    }
 })
 .cut((floor, response) => {
-	if(floor.pickup("my_super_cookie"))response.code(403).deleteCookie("my_super_cookie").info("already has my super cookie").send();
+    if(floor.pickup("my_super_cookie"))response.code(403).deleteCookie("my_super_cookie").info("already has my super cookie").send();
 })
 .handler((floor, response) => {
-	response.code(200).info("take my super cookie").setCookie("my_super_cookie", "a nice cookie").send();
+    response.code(200).info("take my super cookie").setCookie("my_super_cookie", "a nice cookie").send();
 });
 
 duplo.launch();
