@@ -27,7 +27,7 @@
 	"typesVersions": {
 	  "*": {
 		"abstract": ["./types/cookieAbstract.d.ts"],
-		"/": ["./types/cookie.d.ts"]
+		"*": ["./types/cookie.d.ts"]
 	  }
 	},
 	"keywords": [],
