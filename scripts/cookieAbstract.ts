@@ -2,13 +2,13 @@ import {DuploInputFunction, UseAbstractRoute, Request, Response, RouteExtractObj
 import cookie from "cookie";
 import {ZodType} from "zod";
 
-interface RequestCookie extends Request{
+export interface RequestCookie extends Request{
 	cookies: Record<string, string>;
 	getCookie(name: string): string;
 	getCookies(): RequestCookie["cookies"];
 }
 
-interface ResponseCookie extends Response{
+export interface ResponseCookie extends Response{
 	cookies: Record<
 		string, 
 		{
@@ -21,11 +21,11 @@ interface ResponseCookie extends Response{
 	deleteCookie(name: string): Response;
 }
 
-interface RouteExtractObjCookie extends RouteExtractObj{
+export interface RouteExtractObjCookie extends RouteExtractObj{
 	cookies?: Record<string, ZodType>;
 }
 
-const duploCookie: DuploInputFunction<any, ReturnType<UseAbstractRoute<any, any, RequestCookie, ResponseCookie, RouteExtractObjCookie>>> = (instance, config, options) => {
+const duploCookieAbstract: DuploInputFunction<any, ReturnType<UseAbstractRoute<any, any, RequestCookie, ResponseCookie, RouteExtractObjCookie>>> = (instance, config, options) => {
 	const abstractCookie = instance.declareAbstractRoute<RequestCookie, ResponseCookie, RouteExtractObjCookie>("DuploCookie")
 	.hook("onConstructRequest", request => {
 		request.cookies = {};
@@ -69,4 +69,4 @@ const duploCookie: DuploInputFunction<any, ReturnType<UseAbstractRoute<any, any,
 	return abstractCookie;
 };
 
-export default duploCookie;
+export default duploCookieAbstract;
