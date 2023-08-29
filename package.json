@@ -14,7 +14,6 @@
 	  "dist",
 	  "types"
 	],
-	"types": "./types/cookie.d.ts",
 	"exports": {
 	  ".": {
 		"import": "./dist/cookie.mjs",
@@ -27,7 +26,8 @@
 	},
 	"typesVersions": {
 	  "*": {
-		"abstract": [ "./types/cookieAbstract.d.ts" ]
+		"abstract": ["./types/cookieAbstract.d.ts"],
+		"/": ["./types/cookie.d.ts"]
 	  }
 	},
 	"keywords": [],
