@@ -1,12 +1,10 @@
-import {DuploInputFunction} from "@duplojs/duplojs";
+import {DuploConfig, DuploInstance} from "@duplojs/duplojs";
 import cookie from "cookie";
 import {ZodType} from "zod";
 
 declare module "@duplojs/duplojs" {
 	interface Request{
 		cookies: Record<string, string>;
-		getCookie(name: string): string;
-		getCookies(): Request["cookies"];
 	}
 
 	interface Response{
@@ -18,7 +16,6 @@ declare module "@duplojs/duplojs" {
 			}
 		>;
 		setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-		setCookies(cookies: Response["cookies"]): Response;
 		deleteCookie(name: string): Response;
 	}
 
@@ -31,22 +28,12 @@ declare module "@duplojs/duplojs" {
 	}
 }
 
-const duploCookie: DuploInputFunction = (instance, config, options) => {
+function duploCookie(instance: DuploInstance<DuploConfig>){
 	//add function to request & response prototype
-	instance.Request.prototype.getCookie = function(name){
-		return this.cookies[name];
-	};
-	instance.Request.prototype.getCookies = function(){
-		return this.cookies;
-	};
 	instance.Request.prototype.cookies = {};
 	
 	instance.Response.prototype.setCookie = function(name, value, params){
 		this.cookies[name] = {value, params};
-		return this;
-	};
-	instance.Response.prototype.setCookies = function(cookies){
-		this.cookies = {...this.cookies, ...cookies};
 		return this;
 	};
 	instance.Response.prototype.deleteCookie = function(name){
@@ -79,6 +66,6 @@ const duploCookie: DuploInputFunction = (instance, config, options) => {
 			}
 		}
 	);
-};
+}
 
 export default duploCookie;

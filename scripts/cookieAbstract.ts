@@ -1,11 +1,9 @@
-import {DuploInputFunction, UseAbstractRoute, Request, Response, RouteExtractObj} from "@duplojs/duplojs";
+import {UseAbstractRoute, Request, Response, RouteExtractObj, DuploInstance, DuploConfig} from "@duplojs/duplojs";
 import cookie from "cookie";
 import {ZodType} from "zod";
 
 export interface RequestCookie extends Request{
 	cookies: Record<string, string>;
-	getCookie(name: string): string;
-	getCookies(): RequestCookie["cookies"];
 }
 
 export interface ResponseCookie extends Response{
@@ -17,7 +15,6 @@ export interface ResponseCookie extends Response{
 		}
 	>;
 	setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-	setCookies(cookies: ResponseCookie["cookies"]): Response;
 	deleteCookie(name: string): Response;
 }
 
@@ -25,21 +22,15 @@ export interface RouteExtractObjCookie extends RouteExtractObj{
 	cookies?: Record<string, ZodType>;
 }
 
-const duploCookieAbstract: DuploInputFunction<any, ReturnType<UseAbstractRoute<any, any, RequestCookie, ResponseCookie, RouteExtractObjCookie>>> = (instance, config, options) => {
+function duploCookieAbstract(instance: DuploInstance<DuploConfig>){
 	const abstractCookie = instance.declareAbstractRoute<RequestCookie, ResponseCookie, RouteExtractObjCookie>("DuploCookie")
 	.hook("onConstructRequest", request => {
 		request.cookies = {};
-		request.getCookie = (name) => request.cookies[name];
-		request.getCookies = () => request.cookies;
 	})
 	.hook("onConstructResponse", response => {
 		response.cookies = {};
 		response.setCookie = (name, value, params) => {
 			response.cookies[name] = {value, params};
-			return response;
-		};
-		response.setCookies = (cookies) => {
-			response.cookies = {...response.cookies, ...cookies};
 			return response;
 		};
 		response.deleteCookie = (name) => {
@@ -67,6 +58,6 @@ const duploCookieAbstract: DuploInputFunction<any, ReturnType<UseAbstractRoute<a
 	.build()();
 
 	return abstractCookie;
-};
+}
 
 export default duploCookieAbstract;
