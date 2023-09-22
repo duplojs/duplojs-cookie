@@ -1,20 +1,18 @@
 {
-	"name": "@duplojs/cookie",
-	"version": "0.0.0",
-	"description": "",
-	"scripts": {
-	  "dev": "nodemon --exec 'ts-node test/index.ts'",
-	  "dev-abs": "nodemon --exec 'ts-node test/indexAbstract.ts'",
-	  "build": "rollup --config && npx tsc"
+  "name": "@duplojs/cookie",
+  "version": "0.0.0",
+  "author": "mathcovax",
+  "description": "",
+  "repository": "https://github.com/duplojs/duplojs-cookie",
+  "license": "ISC",
+  "keywords": [],
+  "typesVersions": {
+	  "*": {
+		"abstract": ["./types/cookieAbstract.d.ts"],
+		"*": ["./types/cookie.d.ts"]
+	  }
 	},
-	"publishConfig": {
-	  "access": "public"
-	},
-	"files": [
-	  "dist",
-	  "types"
-	],
-	"exports": {
+  "exports": {
 	  ".": {
 		"import": "./dist/cookie.mjs",
 		"require": "./dist/cookie.cjs"
@@ -24,15 +22,18 @@
 		"require": "./dist/cookieAbstract.cjs"
 	  }
 	},
-	"typesVersions": {
-	  "*": {
-		"abstract": ["./types/cookieAbstract.d.ts"],
-		"*": ["./types/cookie.d.ts"]
-	  }
+  "files": [
+	  "dist",
+	  "types"
+	],
+  "publishConfig": {
+	  "access": "public"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+  "scripts": {
+	  "dev": "nodemon --exec 'ts-node test/index.ts'",
+	  "dev-abs": "nodemon --exec 'ts-node test/indexAbstract.ts'",
+	  "build": "rollup --config && npx tsc"
+	},
 	"dependencies": {
 	  "@duplojs/duplojs": ">=0.6.7",
 	  "@types/cookie": "^0.5.1",
@@ -60,5 +61,5 @@
 	  ],
 	  "ext": "ts, js"
 	}
-  }
+}
   

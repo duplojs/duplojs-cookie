@@ -1,4 +1,4 @@
-import {UseAbstractRoute, Request, Response, RouteExtractObj, DuploInstance, DuploConfig} from "@duplojs/duplojs";
+import {Request, Response, RouteExtractObj, DuploInstance, DuploConfig} from "@duplojs/duplojs";
 import cookie from "cookie";
 import {ZodType} from "zod";
 
@@ -15,7 +15,7 @@ export interface ResponseCookie extends Response{
 		}
 	>;
 	setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-	deleteCookie(name: string): Response;
+	deleteCookie(name: string, params?: cookie.CookieSerializeOptions): Response;
 }
 
 export interface RouteExtractObjCookie extends RouteExtractObj{
@@ -33,12 +33,14 @@ function duploCookieAbstract(instance: DuploInstance<DuploConfig>){
 			response.cookies[name] = {value, params};
 			return response;
 		};
-		response.deleteCookie = (name) => {
+		response.deleteCookie = (name, params) => {
 			response.cookies[name] = {
 				value: "",
 				params: {
 					expires: new Date(1),
-					maxAge: undefined
+					maxAge: undefined,
+					path: "/",
+					...(params ? params : {})
 				}
 			};
 			return response;
