@@ -16,7 +16,7 @@ declare module "@duplojs/duplojs" {
 			}
 		>;
 		setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-		deleteCookie(name: string): Response;
+		deleteCookie(name: string, params?: cookie.CookieSerializeOptions): Response;
 	}
 
 	interface RouteExtractObj{
@@ -36,12 +36,14 @@ function duploCookie(instance: DuploInstance<DuploConfig>){
 		this.cookies[name] = {value, params};
 		return this;
 	};
-	instance.Response.prototype.deleteCookie = function(name){
+	instance.Response.prototype.deleteCookie = function(name, params){
 		this.cookies[name] = {
 			value: "",
 			params: {
 				expires: new Date(1),
-				maxAge: undefined
+				maxAge: undefined,
+				path: "/",
+				...(params ? params : {})
 			}
 		};
 		return this;
