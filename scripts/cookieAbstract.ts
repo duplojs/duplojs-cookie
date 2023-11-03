@@ -1,6 +1,16 @@
-import {Request, Response, RouteExtractObj, DuploInstance, DuploConfig} from "@duplojs/duplojs";
+import {Request, Response, RouteExtractObj, DuploInstance, DuploConfig, zod} from "@duplojs/duplojs";
 import cookie from "cookie";
-import {ZodType} from "zod";
+import packageJson from "../package.json";
+
+declare module "@duplojs/duplojs" {
+	interface Plugins {
+		"@duplojs/cookie": {
+			version: string,
+			global?: true,
+			local?: true,
+		},
+	}
+}
 
 export interface RequestCookie extends Request{
 	cookies: Record<string, string>;
@@ -14,19 +24,24 @@ export interface ResponseCookie extends Response{
 			params?: cookie.CookieSerializeOptions 
 		}
 	>;
-	setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-	deleteCookie(name: string, params?: cookie.CookieSerializeOptions): Response;
+	setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): this;
+	deleteCookie(name: string, params?: cookie.CookieSerializeOptions): this;
 }
 
 export interface RouteExtractObjCookie extends RouteExtractObj{
-	cookies?: Record<string, ZodType>;
+	cookies?: Record<string, zod.ZodType>;
 }
 
 function duploCookieAbstract(instance: DuploInstance<DuploConfig>){
-	const abstractCookie = instance.declareAbstractRoute<RequestCookie, ResponseCookie, RouteExtractObjCookie>("DuploCookie")
-	.hook("onConstructRequest", request => {
-		request.cookies = {};
-	})
+	if(!instance.plugins["@duplojs/cookie"]) instance.plugins["@duplojs/cookie"] = {version: packageJson.version};
+	instance.plugins["@duplojs/cookie"].local = true;
+
+	return instance
+	.declareAbstractRoute<
+		RequestCookie, 
+		ResponseCookie, 
+		RouteExtractObjCookie
+	>("DuploCookie")
 	.hook("onConstructResponse", response => {
 		response.cookies = {};
 		response.setCookie = (name, value, params) => {
@@ -46,7 +61,7 @@ function duploCookieAbstract(instance: DuploInstance<DuploConfig>){
 			return response;
 		};
 	})
-	.hook("onConstructRequest", request => {
+	.hook("onConstructRequest", (request) => {
 		if(request.rawRequest.headers?.cookie) request.cookies = cookie.parse(request.rawRequest.headers.cookie);
 		else request.cookies = {};
 	})
@@ -54,12 +69,10 @@ function duploCookieAbstract(instance: DuploInstance<DuploConfig>){
 		if(Object.keys(response.cookies).length !== 0){
 			const setCookies: string[] = [];
 			Object.entries(response.cookies).forEach(([index, obj]) => setCookies.push(cookie.serialize(index, obj.value, obj.params)));
-			response.rawResponse.setHeader("set-cookie", setCookies.join(", "));
+			response.rawResponse.setHeader("set-cookie", setCookies);
 		}
 	})
 	.build()();
-
-	return abstractCookie;
 }
 
 export default duploCookieAbstract;

@@ -1,8 +1,16 @@
-import {DuploConfig, DuploInstance} from "@duplojs/duplojs";
+import {DuploConfig, DuploInstance, zod} from "@duplojs/duplojs";
 import cookie from "cookie";
-import {ZodType} from "zod";
+import packageJson from "../package.json";
 
 declare module "@duplojs/duplojs" {
+	interface Plugins {
+		"@duplojs/cookie": {
+			version: string,
+			global?: true,
+			local?: true,
+		},
+	}
+
 	interface Request{
 		cookies: Record<string, string>;
 	}
@@ -20,15 +28,18 @@ declare module "@duplojs/duplojs" {
 	}
 
 	interface RouteExtractObj{
-		cookies?: Record<string, ZodType>;
+		cookies?: Record<string, zod.ZodType>;
 	}
 
 	interface ProcessExtractObj{
-		cookies?: Record<string, ZodType>;
+		cookies?: Record<string, zod.ZodType>;
 	}
 }
 
 function duploCookie(instance: DuploInstance<DuploConfig>){
+	if(!instance.plugins["@duplojs/cookie"]) instance.plugins["@duplojs/cookie"] = {version: packageJson.version};
+	instance.plugins["@duplojs/cookie"].global = true;
+
 	//add function to request & response prototype
 	instance.Request.prototype.cookies = {};
 	
@@ -64,7 +75,7 @@ function duploCookie(instance: DuploInstance<DuploConfig>){
 			if(Object.keys(response.cookies).length !== 0){
 				const setCookies: string[] = [];
 				Object.entries(response.cookies).forEach(([index, obj]) => setCookies.push(cookie.serialize(index, obj.value, obj.params)));
-				response.rawResponse.setHeader("set-cookie", setCookies.join(", "));
+				response.rawResponse.setHeader("set-cookie", setCookies);
 			}
 		}
 	);
