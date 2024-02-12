@@ -23,15 +23,11 @@ declare module "@duplojs/duplojs" {
 				params?: cookie.CookieSerializeOptions 
 			}
 		>;
-		setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): Response;
-		deleteCookie(name: string, params?: cookie.CookieSerializeOptions): Response;
+		setCookie(name: string, value: string, params?: cookie.CookieSerializeOptions): this;
+		deleteCookie(name: string, params?: cookie.CookieSerializeOptions): this;
 	}
 
-	interface RouteExtractObj{
-		cookies?: Record<string, zod.ZodType>;
-	}
-
-	interface ProcessExtractObj{
+	interface ExtractObject{
 		cookies?: Record<string, zod.ZodType>;
 	}
 }
@@ -41,13 +37,13 @@ function duploCookie(instance: DuploInstance<DuploConfig>){
 	instance.plugins["@duplojs/cookie"].global = true;
 
 	//add function to request & response prototype
-	instance.Request.prototype.cookies = {};
+	instance.class.Request.prototype.cookies = {};
 	
-	instance.Response.prototype.setCookie = function(name, value, params){
+	instance.class.Response.prototype.setCookie = function(name, value, params){
 		this.cookies[name] = {value, params};
 		return this;
 	};
-	instance.Response.prototype.deleteCookie = function(name, params){
+	instance.class.Response.prototype.deleteCookie = function(name, params){
 		this.cookies[name] = {
 			value: "",
 			params: {
@@ -59,7 +55,7 @@ function duploCookie(instance: DuploInstance<DuploConfig>){
 		};
 		return this;
 	};
-	instance.Response.prototype.cookies = {};
+	instance.class.Response.prototype.cookies = {};
 
 	//hook cookies
 	instance.addHook(
@@ -73,9 +69,12 @@ function duploCookie(instance: DuploInstance<DuploConfig>){
 		"beforeSend",
 		(request, response) => {
 			if(Object.keys(response.cookies).length !== 0){
-				const setCookies: string[] = [];
-				Object.entries(response.cookies).forEach(([index, obj]) => setCookies.push(cookie.serialize(index, obj.value, obj.params)));
-				response.rawResponse.setHeader("set-cookie", setCookies);
+				response.rawResponse.setHeader(
+					"set-cookie", 
+					Object.entries(response.cookies).map(
+						([index, obj]) => cookie.serialize(index, obj.value, obj.params)
+					)
+				);
 			}
 		}
 	);

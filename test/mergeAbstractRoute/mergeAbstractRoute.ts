@@ -1,4 +1,4 @@
-import {DuploInstance, DuploConfig, Response, Request, zod, RouteExtractObj} from "@duplojs/duplojs";
+import {DuploInstance, DuploConfig, Response, Request, zod, ExtractObject} from "@duplojs/duplojs";
 import duploCookieAbstract from "../../scripts/cookieAbstract";
 
 interface RequestTest extends Request{
@@ -9,7 +9,7 @@ interface ResponseTest extends Response{
 	test(): this;
 }
 
-interface extractTest extends RouteExtractObj{
+interface extractTest extends ExtractObject{
 	url?: zod.ZodType
 }
 

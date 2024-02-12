@@ -2,7 +2,7 @@ import Duplo, {zod} from "@duplojs/duplojs";
 import duploCookieAbstract from "../../scripts/cookieAbstract";
 import {parentPort} from "worker_threads";
 
-const duplo = Duplo({port: 1506, host: "0.0.0.0"});
+const duplo = Duplo({port: 1506, host: "localhost", environment: "DEV"});
 const abstractCookie = duplo.use(duploCookieAbstract);
 
 abstractCookie.declareRoute("GET", "/cookie/test/1")
