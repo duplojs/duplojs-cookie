@@ -1,4 +1,5 @@
 # duplojs-cookie
+[![NPM version](https://img.shields.io/npm/v/@duplojs/)](https://www.npmjs.com/package/@duplojs/)
 
 ## Instalation
 ```
@@ -12,7 +13,7 @@ npm i @duplojs/cookie
 import Duplo, {zod} from "@duplojs/duplojs";
 import duploCookie from "@duplojs/cookie";
 
-const duplo = Duplo({port: 1506, host: "0.0.0.0"});
+const duplo = Duplo({port: 1506, host: "localhost", environment: "DEV"});
 duplo.use(duploCookie);
 
 // exempel global
@@ -37,7 +38,7 @@ duplo.launch();
 import Duplo, {zod} from "@duplojs/duplojs";
 import duploCookieAbstract from "@duplojs/cookie/abstract";
 
-const duplo = Duplo({port: 1506, host: "0.0.0.0"});
+const duplo = Duplo({port: 1506, host: "localhost", environment: "DEV"});
 const abstractCookie = duplo.use(duploCookieAbstract);
 
 // exemple local
