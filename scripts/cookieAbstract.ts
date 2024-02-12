@@ -1,4 +1,4 @@
-import {Request, Response, RouteExtractObj, DuploInstance, DuploConfig, zod} from "@duplojs/duplojs";
+import {Request, Response, DuploInstance, DuploConfig, zod, ExtractObject} from "@duplojs/duplojs";
 import cookie from "cookie";
 import packageJson from "../package.json";
 
@@ -28,7 +28,7 @@ export interface ResponseCookie extends Response{
 	deleteCookie(name: string, params?: cookie.CookieSerializeOptions): this;
 }
 
-export interface RouteExtractObjCookie extends RouteExtractObj{
+export interface RouteExtractObjCookie extends ExtractObject{
 	cookies?: Record<string, zod.ZodType>;
 }
 
