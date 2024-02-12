@@ -1,5 +1,5 @@
 # duplojs-cookie
-[![NPM version](https://img.shields.io/npm/v/@duplojs/)](https://www.npmjs.com/package/@duplojs/)
+[![NPM version](https://img.shields.io/npm/v/@duplojs/cookie)](https://www.npmjs.com/package/@duplojs/cookie)
 
 ## Instalation
 ```
@@ -16,7 +16,7 @@ import duploCookie from "@duplojs/cookie";
 const duplo = Duplo({port: 1506, host: "localhost", environment: "DEV"});
 duplo.use(duploCookie);
 
-// exempel global
+// exemple global
 duplo.declareRoute("GET", "/")
 .extract({
     cookies: {
