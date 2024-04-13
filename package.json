@@ -9,21 +9,23 @@
   "typesVersions": {
     "*": {
       "abstract": [
-        "./types/scripts/cookieAbstract.d.ts"
+        "./types/cookieAbstract.d.ts"
       ],
       "*": [
-        "./types/scripts/cookie.d.ts"
+        "./types/cookie.d.ts"
       ]
     }
   },
   "exports": {
     ".": {
       "import": "./dist/cookie.mjs",
-      "require": "./dist/cookie.cjs"
+      "require": "./dist/cookie.cjs",
+	  "types": "./types/cookieAbstract.d.ts"
     },
     "./abstract": {
       "import": "./dist/cookieAbstract.mjs",
-      "require": "./dist/cookieAbstract.cjs"
+      "require": "./dist/cookieAbstract.cjs",
+	  "types": "./types/cookie.d.ts"
     }
   },
   "files": [
@@ -55,6 +57,6 @@
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-esbuild": "^5.0.0",
     "sucrase": "^3.34.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.4.2"
   }
 }
